@@ -13,10 +13,10 @@ app.get('/', function(request,response){  // 요청받지않은 페이지 홈화
 })
 
 app.use(bodyparser.json());  // bodyparser json 형태로 뿌려주기
-app.use(bodyParser.urlencoded({extended:true}));  // 아직이해못함
+app.use(bodyParser.urlencoded({extended:true}));  // 아직이해못함  true 로 설정되면 인코딩된 URL 데이터가 qs 모듈로 분석
+                                                // false 면 querystring 으로 인코딩된 데이터 분석
 
-
-var db = mysql.createConnection({  // 데이터베이스 연동폼 
+var db = mysql.createConnection({  // 데이터베이스 연동폼 , 
     host : "localhost",
     user: "root",
     password: "99189176",
@@ -24,22 +24,27 @@ var db = mysql.createConnection({  // 데이터베이스 연동폼
     port:"3306",
 });
 db.connect(); // db connect 함수 시작
-
+// 데이터베이스를 왜썻는가 ?
+// fs 파일을 만들어서 데이터를 출력하는것이아닌 sql RDBMS 를 사용하여 데이터를 좀더 간편하게 CRUD 하기위함 
 
 app.listen(3000, function(){ // 3000번포트로 뿌려주면 비동기함수 서버시작한다고 콘솔띄우기
     console.log('서버시작이')
 });
 
-app.post('/index', function(req, res){   //  3000/index 로 post 요청 
+app.post('/index', function(req, res){   //  3000/index 로 post 요청 , templates 파일 action 과 동일한 URI
     var data = req.body.des // data 변수안에 요청받은 bodyparser 중에 index.ejs form 안에 des 
-    var query = db.query('INSERT INTO user (des) VALUES (?)',[
+    var query = db.query('INSERT INTO user (des) VALUES (?)',[    // user 안에 des 테이블
         data
     ])
-    
-    var list = db.query('SELECT * FROM user', (err, results) => {
-        if(err) throw err;
-        console.log('DATA RECEIVE:');
-        console.log(results);
-        res.send(results)
     })
-})
+app.get('/GetList', function(req, res){
+        var query2 = db.query('SELECT id, des FROM user', (err, rows, fields) => {  // err, results 콜백함수값으로 
+            if(err) { 
+                throw err
+             }   // err 가있으면 err 를 throw 한
+            for(var i = 0; i < rows.length; i++){
+                var result = console.log('id : '+rows[i].id + '  ,  '+'des : '+ rows[i].des);
+            }
+            res.send(result)
+        });
+    });
