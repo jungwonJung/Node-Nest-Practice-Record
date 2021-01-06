@@ -10,6 +10,7 @@ app.set('views', './views/') // 아직 이해못함
 
 app.get('/', function(request,response){  // 요청받지않은 페이지 홈화면 요청받으면 index.ejs 페이지출력
     response.render('index') // views 안에 index.ejs 렌더링
+    response.end();
 })
 
 app.use(bodyparser.json());  // bodyparser json 형태로 뿌려주기
@@ -35,16 +36,22 @@ app.post('/index', function(req, res){   //  3000/index 로 post 요청 , templa
     var data = req.body.des // data 변수안에 요청받은 bodyparser 중에 index.ejs form 안에 des 
     var query = db.query('INSERT INTO user (des) VALUES (?)',[    // user 안에 des 테이블
         data
-    ])
-    })
+    ]);
+});
+
 app.get('/GetList', function(req, res){
-        var query2 = db.query('SELECT id, des FROM user', (err, rows, fields) => {  // err, results 콜백함수값으로 
+        var query2 = db.query('SELECT * FROM user', (err, results, fields) => {  // err, results 콜백함수값으로 
             if(err) { 
-                throw err
-             }   // err 가있으면 err 를 throw 한
-            for(var i = 0; i < rows.length; i++){
-                var result = console.log('id : '+rows[i].id + '  ,  '+'des : '+ rows[i].des);
+                // return res.status(500).send('server error');
+             } // err 가있으면 err 를 throw 한
+            var list = ''
+            for(var i = 0; i < results.length; i++){
+                list = 'id : '+results[i].id + '  ,  '+'des : '+ results[i].des;
+                console.log(list)
+                // res.send(list);
+            };
+            res.send({list});
+            // res.render('getlist',{list : list})res.json(list);
             }
-            res.send(result)
-        });
+        ); 
     });
