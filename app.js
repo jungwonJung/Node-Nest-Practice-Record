@@ -40,18 +40,33 @@ app.post('/index', function(req, res){   //  3000/index 로 post 요청 , templa
 });
 
 app.get('/GetList', function(req, res){
-        var query2 = db.query('SELECT * FROM user', (err, results, fields) => {  // err, results 콜백함수값으로 
+        return db.query('SELECT * FROM user', (err, results, fields) => {  
             if(err) { 
                 // return res.status(500).send('server error');
-             } // err 가있으면 err 를 throw 한
-            var list = ''
+            }
+
+            var list = [];   // 빈배열을 만들어 문자열말고 배열화 시키자
             for(var i = 0; i < results.length; i++){
-                list = 'id : '+results[i].id + '  ,  '+'des : '+ results[i].des;
+                list.push('id : '+  results[i].id + '  , '+'des : '+ results[i].des); // list = 반복문 을해버리면 반복문이 돌때마다 list 값이 변경됨
                 console.log(list)
-                // res.send(list);
             };
-            res.send({list});
-            // res.render('getlist',{list : list})res.json(list);
+            res.send(list.join('\n'));
             }
         ); 
     });
+
+// app.get('GetList', function(req, res){  배열화 실패
+//     var list = [];
+//     var pushresults = function(results) {
+//         for(var i = 0; i < list.length; i++) {
+//             list.push(results[i].id, results[i].des);
+//         };
+//     };
+// });
+
+// return db.query('SELECT * FROM user', (err, results, fields) => {  
+//     if(!err) {
+//         pushresults(list);
+//         console.log(list)
+//     };
+// });
