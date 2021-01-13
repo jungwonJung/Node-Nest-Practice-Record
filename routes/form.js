@@ -9,4 +9,8 @@ router.get('/', function(req, res, next){ // 라우터는 URI 요청에 응답�
     }); // res.render 는 해당 'view' 파일을 지정할수잇음
 });
 
+router.post('/', function(req,res,next){ // post 요청에 응당하는 router
+    res.json(req.body) // 요청받은데이터를 json 함수로 response 하겟음
+});
+
 module.exports = router; // 전역으로 해당 라우터를 사용하게해줌
