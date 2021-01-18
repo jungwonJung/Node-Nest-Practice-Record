@@ -15,7 +15,7 @@ app.get('/', function(request,response){  // 요청받지않은 페이지 홈화
 
 app.use(bodyparser.json());  // bodyparser json 형태로 뿌려주기   // 동적미들웨어 16~17
 app.use(bodyParser.urlencoded({extended:true}));  // 입력폼에서 POST 요청으로 데이터를 얻을수있는지 확인하기위해 라우팅설정
-                                                    // req.body 에 받은 데이터 저장
+                                                // req.body 에 받은 데이터 저장
 
 var db = mysql.createConnection({  // 데이터베이스 연동폼 , 
     host : "localhost",
@@ -116,7 +116,7 @@ app.get('/page', function(req, res, next){  // /page 로들어오면 /page/1 로
 
 app.get('/page/:page', function(req, res, next){
     var page = req.params.page;
-    var sql = "SELECT id, des from user ORDER BY id DESC";
+    var sql = "SELECT id, des from user ORDER BY id DESC"; // 내림차순으로
 
     db.query(sql, function(err, results){
         if (err) throw err;
@@ -125,10 +125,12 @@ app.get('/page/:page', function(req, res, next){
 })
 
 app.post('/search', function(req, res, next){
-    var sql = "SELECT * FROM user WHERE des LIKE " +db.escape("%"+ req.body.id +"%");
+    var id = req.body.id
+    var data = "%" + id + "%" // Like 구문 ? 변수
+    var data2 = "%" + id + "%"
+    var sql = "SELECT * FROM user WHERE des LIKE ? or id LIKE ? ";
     // var sql = "SELECT * FROM user WHERE des LIKE " + '%'+ req.body.id +'%';
-
-    db.query(sql, req.body.id, function(err, results){
+    db.query(sql, [data,data2], function(err, results){ // 2개의 변수
         if(err) throw err;
         console.log(results)
         res.render('search', {datas : results});
