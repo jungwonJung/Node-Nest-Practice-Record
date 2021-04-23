@@ -18,7 +18,7 @@ export class User {
     @Column({length:64})
     userPassword:string;
 
-    @Column({length:64})
+    @Column({length:64, default : 10000})
     userPoint:string;
 
             

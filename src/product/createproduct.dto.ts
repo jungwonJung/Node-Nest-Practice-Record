@@ -14,10 +14,6 @@ export class CreateProductDto { // 상품생성시
 
     @ApiProperty()
     @IsNotEmpty()
-    product_image: string;
-
-    @ApiProperty()
-    @IsNotEmpty()
     product_description: string;
 
     @ApiProperty()

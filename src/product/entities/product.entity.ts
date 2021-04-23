@@ -1,7 +1,7 @@
 import { BeforeInsert, BeforeUpdate, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 import { InternalServerErrorException } from "@nestjs/common";
 
-@Entity({name:'product', schema:'nest-mall'})
+@Entity({name:'product', schema:'nest-mall', orderBy : { product_price : 'DESC'}}) // 현재 기본설정에선 가격이 높은 순으로 정렬
 export class Product {
 
     @PrimaryGeneratedColumn()
@@ -23,4 +23,8 @@ export class Product {
     product_price:string;
 
 }
+
+
+// mysql테이블 조건 entities
+
 
