@@ -10,7 +10,7 @@ import { ProductController } from './product/product.controller';
 import { Product } from './product/entities/product.entity';
 
 @Module({
-  imports: [TypeOrmModule.forRoot({entities: [Product]}),UserModule,ProductModule], // TypeOrmModule.forRoot() typeORM 사용하기위해 추가
+  imports: [TypeOrmModule.forRoot({entities: [Product]}),UserModule,ProductModule], 
   controllers: [AppController],
   providers: [AppService],
 

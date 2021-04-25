@@ -6,7 +6,6 @@ import * as bcrypt from 'bcrypt'
 import { CreateUsersDto } from './createuser.dto';
 
 
-// Module에 등록하면 현재의(User)에서 UsersRepository를 @InjectRepository() decorator를 사용하여 UserService안에 inject 
 @Controller('user')
 export class UserController {
     constructor (
@@ -22,11 +21,10 @@ export class UserController {
         @Body('userName') userName : string,
         @Body('userPassword') userPassword : string,
     ) {
-        const hashPassword = await bcrypt.hash(userPassword, 12);
         return this.userService.create({
             userEmail,
             userName,
-            userPassword : hashPassword
+            userPassword,
         })
     }
 
