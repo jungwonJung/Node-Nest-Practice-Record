@@ -6,7 +6,7 @@ import * as bcrypt from 'bcrypt';
 export class User {
 
     @PrimaryGeneratedColumn()
-    user_id:string;
+    userId:string;
 
 
     @Column({length:64})
@@ -18,18 +18,7 @@ export class User {
     @Column({length:64})
     userPassword:string;
 
-    @Column({length:64, default : 10000})
-    userPoint:string;
+    @Column({default : 10000})
+    userPoint:number;
 
-            
-    // async checkPassword(userPassword: string): Promise<boolean> {
-    //     try {
-    //         return await bcrypt.compare(userPassword, this.userPassword);
-    //     } catch (error) {
-    //         console.log(error);
-    //         throw new InternalServerErrorException({
-    //             ...error.response,
-    //         });
-    //     }
-    // }
 }

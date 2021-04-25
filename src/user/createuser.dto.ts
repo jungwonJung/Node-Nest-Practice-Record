@@ -7,7 +7,7 @@ import { IsEmail, IsNotEmpty, Length } from "class-validator";
 // DTO란 각 계층(컨트롤러, 뷰 등) 간의 데이터 교환을 위한 객체를 말한다
 
 export class CreateUsersDto {
-    user_id: string;
+    userId: string;
 
     @ApiProperty()
     @IsEmail()

@@ -14,21 +14,24 @@ export class UserService {
         private jwtService : JwtService
             ){}
 
-    // save를통해 데이터 저장하는 과정에 중복된 이메일이 있으면 error 보내주기
-    // 회원가입
     async create(data: any) {
-        const isExist = await this.usersRepository.findOne({  // 입력받은 이메일 값과 저장되어 있는 데이터 비교
+        const isExist = await this.usersRepository.findOne({  
             userEmail: data.userEmail
         });
         if (isExist) {
-            throw new ForbiddenException({ // 중복되는값이 있으면 에러 날리기
-                statusCode:HttpStatus.FORBIDDEN,
+            throw new ForbiddenException({
+                statusCode:HttpStatus.CONFLICT,
                 message:['등록된 이메일입니다'],
                 error:'금지'
             });
         }
         try {
-            await this.usersRepository.save(data) // userRepository 는 Product 를 나타냄
+            const hashPassword = await bcrypt.hash(data.userPassword, 12);
+            await this.usersRepository.save({
+                userEmail : data.userEmail,
+                userName  : data.userName,
+                userPassword : data.userPassword
+                }) 
         } catch (error) {
             return {
                 ...error
@@ -45,10 +48,9 @@ export class UserService {
 
 
 
-    // 로그인 api
     async signIn(userEmail : string, userPassword : string){
             const user = await this.usersRepository.findOne({userEmail});
-            if (!user) { // 입력받은 데이터와 저장되어있는 데이터 비교
+            if (!user) { 
             throw new NotFoundException({
                 error: '찾지못함',
                 message: ['사용자를 찾지 못했습니다.'],
@@ -65,7 +67,7 @@ export class UserService {
             return {
                 userEmail : user.userEmail,
                 userName : user.userName,
-                Token : jwt
+                userToken : jwt
             }
         
     }

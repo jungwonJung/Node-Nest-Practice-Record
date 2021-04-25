@@ -1,22 +1,22 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsNotEmpty } from "class-validator";
 
-export class CreateProductDto { // 상품생성시
-    product_id:string;
+export class CreateProductDto { 
+    productId:string;
 
     @ApiProperty()
     @IsNotEmpty()
-    product_title: string;
+    productTitle: string;
 
     @ApiProperty()
     @IsNotEmpty()
-    product_category: string;
+    productCategory: string;
 
     @ApiProperty()
     @IsNotEmpty()
-    product_description: string;
+    productDescription: string;
 
     @ApiProperty()
     @IsNotEmpty()
-    product_price: string;
+    productPrice: string;
 }
