@@ -1,41 +1,59 @@
-*2021.04.23
+# 쇼핑몰 api 구현해보기
 
-*회원가입 구현
-비밀번호 암호화 하여 저장 
-bcrypt 사용
-가입시 적립금 10000
+# 내용
 
-*로그인 구현
-로그인 시
-토큰 발행
+## 과제로 주신 쇼핑몰 api 구현해보기
 
+### 사용자
 
+회원가입  
+로그인
 
-*상품 등록 api 구현
+---
 
-*상품 리스트 api 구현
-페이지네이션구현 
-타이틀 이미지url, 가격
-가격순정렬 미구현 
-현재 기본값 오름차순
+### 상품
 
+상품리스트  
+상품 세부사항  
+상품 구매
 
-*상품 디테일 정보 api 구현
-상품 id 로 상품디테일정보 확인가능
+---
 
+### 추가사항
 
-*상품구매 미구현
-구현계획
-로그인시 생성된 토큰값으로 유저확인뒤
-해당유저의 적립금과   특정 상품의 가격을 비교한뒤
-적립금 >= 가격 이면 
-구매내역 entity 를 생성하여 
-user_id, product_id ,구매날짜  column 생성하여 
-하나의 테이블 구현  해야겠다고 생각중
+dockerize  
+api 문서화
 
-*dockerize 로 컨테이너 생성했으나
-mysql 관련에러로 docker run 되지않고있음
+---
 
-*swagger 로 api 명세
+## 설치방법
 
+-   npm
 
+```
+$ npm i -g @nestjs/cli
+```
+
+---
+
+## git 으로 설치
+
+-   git
+
+```
+$ git clone https://github.com/sellernote-recruit/backend_wjdwjd1501.git
+$ npm install
+$ cd backend_wjdwjd1501
+$ npm run start
+```
+
+---
+
+## 사용방법
+
+-   run project
+
+```
+$ cd backend_wjdwjd1501
+$ npm run start
+```

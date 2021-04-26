@@ -1,59 +1,54 @@
 import { ForbiddenException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { paginate,Pagination, IPaginationOptions,} from 'nestjs-typeorm-paginate';
-import { extname } from 'path';
-import { Any, Repository } from 'typeorm';
+import { Pagination } from 'src/paginate/pagination';
+import { PaginationOptions } from 'src/paginate/pagination.options';
+import { Repository } from 'typeorm';
 import { CreateProductDto } from './createproduct.dto';
 import { Product } from './entities/product.entity';
-
-
-
 
 @Injectable()
 export class ProductService {
     constructor(
         @InjectRepository(Product)
-        private readonly productRepsitory : Repository<Product>
+        private readonly productRepsitory: Repository<Product>,
     ) {}
 
-
-    
     async createproduct(data: CreateProductDto) {
-        const isExist = await this.productRepsitory.findOne({  
-            productTitle: data.productTitle
+        const isExist = await this.productRepsitory.findOne({
+            productTitle: data.productTitle,
         });
-        if (isExist) { 
+        if (isExist) {
             throw new ForbiddenException({
-                statusCode:HttpStatus.CONFLICT,
-                message:['상품명이 중복됩니다'],
-                error:'상품명중복'
+                statusCode: HttpStatus.CONFLICT,
+                message: ['상품명이 중복됩니다'],
+                error: '상품명중복',
             });
-        } 
+        }
         try {
-            await this.productRepsitory.save(data)
+            await this.productRepsitory.save(data);
         } catch (error) {
             return {
-                ...error
-            }
+                ...error,
+            };
         }
         return {
             statusCode: HttpStatus.CREATED,
-            message:'상품등록완료'
-        }
-    } 
-
-    async list(options : IPaginationOptions ) : Promise<Pagination<Product>> {
-        const queryBuilder = this.productRepsitory
-            .createQueryBuilder('product')
-            .select(['product.productTitle', 'product.productImage', 'product.productPrice'])
-        return paginate<Product>(queryBuilder, options);
+            message: '상품등록완료',
+        };
     }
 
-
-    async detail(id : string) : Promise<Product> {
-        return this.productRepsitory.findOne({productId : id})
+    async list(options: PaginationOptions): Promise<Pagination<Product>> {
+        const [results, total] = await this.productRepsitory.findAndCount({
+            select: ['productTitle', 'productPrice', 'productImage'],
+            take: options.limit,
+            skip: options.page,
+        });
+        return new Pagination<Product>({
+            results,
+            total,
+        });
     }
-
+    async detail(id: string): Promise<Product> {
+        return this.productRepsitory.findOne({ productId: id });
+    }
 }
-
-
