@@ -38,7 +38,6 @@ export class UserService {
             };
         }
         return {
-            statusCode: HttpStatus.CREATED,
             message: '가입완료, 적립금 10000원이 발급되었습니다',
             userEmail: data.userEmail,
             userName: data.userName,
@@ -69,7 +68,6 @@ export class UserService {
         });
 
         return {
-            statusCode: HttpStatus.OK,
             userEmail: user.userEmail,
             userName: user.userName,
             userToken: jwt,

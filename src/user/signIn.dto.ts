@@ -9,6 +9,4 @@ export class SignInRequestDto {
     @ApiProperty()
     @Length(3, 20)
     userPassword: string;
-
-    userName: string;
 }
