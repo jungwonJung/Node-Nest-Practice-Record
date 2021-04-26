@@ -1,3 +1,3 @@
-export * from './pagination.options';
-export * from './pagination.results';
-export * from './pagination';
+export { PaginationOptions } from './pagination.options';
+export { PaginationResult } from './pagination.results';
+export { Pagination } from './pagination';

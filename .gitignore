@@ -35,5 +35,5 @@ lerna-debug.log*
 
 ormconfig.json
 .env
-.prettierrrc
+.prettierrc
 .eslintrc.js
