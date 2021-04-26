@@ -3,7 +3,7 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 @Entity({ name: 'user', schema: 'nest-mall' })
 export class User {
     @PrimaryGeneratedColumn()
-    userId: string;
+    userId: number;
 
     @Column({ length: 64 })
     userEmail: string;

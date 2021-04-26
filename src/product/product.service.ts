@@ -48,7 +48,7 @@ export class ProductService {
             total,
         });
     }
-    async detail(id: string): Promise<Product> {
+    async detail(id: number): Promise<Product> {
         return this.productRepsitory.findOne({ productId: id });
     }
 }

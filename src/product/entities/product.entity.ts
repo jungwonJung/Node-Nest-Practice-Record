@@ -7,7 +7,7 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 })
 export class Product {
     @PrimaryGeneratedColumn()
-    productId: string;
+    productId: number;
 
     @Column({ length: 64 })
     productTitle: string;
