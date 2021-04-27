@@ -33,5 +33,7 @@ lerna-debug.log*
 !.vscode/launch.json
 !.vscode/extensions.json
 
-/.ormconfig.json
-/.env
+ormconfig.json
+.env
+.prettierrc
+.eslintrc.js

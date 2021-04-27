@@ -6,10 +6,13 @@ import { Product } from './entities/product.entity';
 import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
-  imports:[TypeOrmModule.forFeature([Product]),MulterModule.register({
-    dest: '../upload',
-  })],
-  providers: [ProductService],
-  controllers: [ProductController]
+    imports: [
+        TypeOrmModule.forFeature([Product]),
+        MulterModule.register({
+            dest: '../upload',
+        }),
+    ],
+    providers: [ProductService],
+    controllers: [ProductController],
 })
 export class ProductModule {}

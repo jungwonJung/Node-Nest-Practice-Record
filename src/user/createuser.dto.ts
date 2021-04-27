@@ -1,10 +1,5 @@
-import { DefaultValuePipe } from "@nestjs/common";
-import { ApiProperty } from "@nestjs/swagger";
-import { IsEmail, IsNotEmpty, Length } from "class-validator";
-
-
-// 회원가입시 필요 dto
-// DTO란 각 계층(컨트롤러, 뷰 등) 간의 데이터 교환을 위한 객체를 말한다
+import { ApiProperty } from '@nestjs/swagger';
+import { IsEmail, IsNotEmpty, Length } from 'class-validator';
 
 export class CreateUsersDto {
     userId: string;
@@ -23,6 +18,5 @@ export class CreateUsersDto {
     userPassword: string;
 
     @IsNotEmpty()
-    userPoint: string = '10000'
-
-    }
+    userPoint: string = '10000';
+}
