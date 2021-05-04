@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { MulterModule } from '@nestjs/platform-express';
 import { ProductService } from './product.service';
 import { ProductController } from './product.controller';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { Product } from './entities/product.entity';
-import { MulterModule } from '@nestjs/platform-express';
+import { Product } from 'src/entities/product.entity';
 
 @Module({
     imports: [

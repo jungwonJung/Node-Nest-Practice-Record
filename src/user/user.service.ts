@@ -1,17 +1,19 @@
 import { ForbiddenException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/user/entities/user.entity';
-import { Repository } from 'typeorm';
-import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { CreateUsersDto } from './createuser.dto';
+import { User } from '../../src/entities/user.entity';
+// src/user/user.entoty 모듈을 못찾는다해서 절대경로로 바꿧더니 찾음..
+import * as bcrypt from 'bcrypt';
+import { CreateUsersDto } from 'src/dtos/createuser.dto';
+import { UsersRepository } from '../../src/user/user.repository';
+import { Connection } from 'typeorm';
 
 @Injectable()
 export class UserService {
     constructor(
         @InjectRepository(User)
-        private readonly usersRepository: Repository<User>,
-        private jwtService: JwtService,
+        private readonly usersRepository: UsersRepository,
+        private readonly jwtService: JwtService,
     ) {}
 
     async create(data: CreateUsersDto) {
@@ -46,7 +48,7 @@ export class UserService {
         };
     }
 
-    async signIn(userEmail: string, userPassword: string) {
+    async login(userEmail: string, userPassword: string) {
         const user = await this.usersRepository.findOne({ userEmail });
         if (!user) {
             throw new NotFoundException({
@@ -63,14 +65,19 @@ export class UserService {
             });
         }
 
-        const jwt = await this.jwtService.signAsync({
-            userEmail: user.userEmail,
-        });
-
+        const payload = { userId: user.userId };
+        const accessToken = await this.jwtService.sign(payload);
         return {
             userEmail: user.userEmail,
             userName: user.userName,
-            userToken: jwt,
+            userToken: accessToken,
         };
+    }
+
+    async findEmail(userId: number) {
+        const user = await this.usersRepository.findOne({
+            where: { userId: userId },
+        });
+        return user;
     }
 }

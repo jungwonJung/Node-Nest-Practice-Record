@@ -10,6 +10,7 @@ async function bootstrap() {
         .setTitle('mission')
         .setDescription('misson API')
         .setVersion('1.0')
+        .addBearerAuth({ type: 'http', scheme: 'bearer', bearerFormat: 'JWT' }, 'accessToken')
         .build();
     const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('/', app, document);

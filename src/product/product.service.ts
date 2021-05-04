@@ -3,14 +3,15 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Pagination } from 'src/paginate/pagination';
 import { PaginationOptions } from 'src/paginate/pagination.options';
 import { Repository } from 'typeorm';
-import { CreateProductDto } from './createproduct.dto';
-import { Product } from './entities/product.entity';
+import { CreateProductDto } from '../dtos/createproduct.dto';
+import { Product } from '../entities/product.entity';
+import { ProductRepository } from './product.repository';
 
 @Injectable()
 export class ProductService {
     constructor(
         @InjectRepository(Product)
-        private readonly productRepsitory: Repository<Product>,
+        private readonly productRepsitory: ProductRepository,
     ) {}
 
     async createproduct(data: CreateProductDto) {
