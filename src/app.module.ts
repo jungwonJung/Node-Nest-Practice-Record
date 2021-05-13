@@ -7,6 +7,7 @@ import { UserModule } from './user/user.module';
 import { ProductModule } from './product/product.module';
 import { Product } from './entities/product.entity';
 import { AuthModule } from './auth/auth.module';
+import { PurchaseModule } from './purchase/purchase.module';
 
 @Module({
     imports: [
@@ -15,6 +16,7 @@ import { AuthModule } from './auth/auth.module';
         ProductModule,
         AuthModule,
         ConfigModule.forRoot(),
+        PurchaseModule,
     ],
     controllers: [AppController],
     providers: [AppService],

@@ -3,7 +3,7 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 @Entity({
     name: 'product',
     schema: 'nest-mall',
-    orderBy: { productPrice: 'DESC' },
+    orderBy: { productTitle: 'DESC' },
 })
 export class Product {
     @PrimaryGeneratedColumn()

@@ -15,10 +15,16 @@ export class ProductController {
     }
 
     @Get('/list')
-    list(@Request() request, @Query('limit') limit: number, @Query('page') page: number) {
+    list(
+        @Request() request,
+        @Query('limit') limit: number,
+        @Query('page') page: number,
+        @Query('sort') sort: string,
+    ) {
         return this.productService.list({
             limit,
             page,
+            sort,
         });
     }
 

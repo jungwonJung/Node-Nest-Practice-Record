@@ -39,16 +39,33 @@ export class ProductService {
     }
 
     async list(options: PaginationOptions): Promise<Pagination<Product>> {
-        const [results, total] = await this.productRepsitory.findAndCount({
-            select: ['productTitle', 'productPrice', 'productImage'],
-            take: options.limit,
-            skip: options.page,
-        });
-        return new Pagination<Product>({
-            results,
-            total,
-        });
+        if (options.sort === 'ASC') {
+            const [results, total] = await this.productRepsitory.findAndCount({
+                select: ['productTitle', 'productPrice', 'productImage'],
+                take: options.limit,
+                skip: options.page,
+                order: { productPrice: 'ASC' },
+            });
+            return new Pagination<Product>({
+                results,
+                total,
+            });
+        }
+
+        if (options.sort === 'DESC') {
+            const [results, total] = await this.productRepsitory.findAndCount({
+                select: ['productTitle', 'productPrice', 'productImage'],
+                take: options.limit,
+                skip: options.page,
+                order: { productPrice: 'DESC' },
+            });
+            return new Pagination<Product>({
+                results,
+                total,
+            });
+        }
     }
+
     async detail(id: number): Promise<Product> {
         return this.productRepsitory.findOne({ productId: id });
     }

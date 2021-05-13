@@ -4,7 +4,7 @@ import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class AuthService {
-    constructor(private readonly userService: UserService, private readonly jwtService: JwtService) {}
+    constructor(private userService: UserService, private jwtService: JwtService) {}
 
     async validateUser(userId: number) {
         const user = await this.userService.findEmail(userId);
