@@ -1,73 +1,118 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
-</p>
+# 미션해결중
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+### 사용자
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+회원가입 = 이메일 , 비밀번호, 이름, 전화번호  
+비밀번호는 세가지 종류 이상의 문자구성 최소 8자리  
+검증되지않을시 에러 리턴
+동일한 이메일 존재시에도 에러 리턴  
+  
 
-## Description
+로그인  
+이메일, 비밀번호로 진행  
+성공시 JWT 토큰 발급
+swagger Authorization 으로 인증가능  
+회원가입과 동일한 방식의 비밀번호 검증  
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+---
 
-## Installation
+### 상품
 
-```bash
+상품리스트  
+가격순  평점순  최신순
+상품 등록 및 삭제
+(상품 디테일 조회는 개인적으로 추가)
+
+---
+
+### 추가사항
+
+api 문서화
+
+---
+
+## 설치방법
+
+-   npm
+
+```
+$ npm i -g @nestjs/cli
+```
+
+---
+
+## git 으로 설치
+
+-   git
+
+```
+$ git clone 
 $ npm install
-```
-
-## Running the app
-
-```bash
-# development
+$ cd mall
 $ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
 ```
 
-## Test
+---
 
-```bash
-# unit tests
-$ npm run test
+## 사용방법
 
-# e2e tests
-$ npm run test:e2e
+-   run project
 
-# test coverage
-$ npm run test:cov
+```
+$ cd mall
+$ npm run start
+```  
+
+## DB연결방법
+ormconfig.json  
+파일을 생성하여  
+```
+{
+    "type": "예시",
+    "host": "로컬호스트",
+    "port": "포트번호",
+    "username": "루트",
+    "password": "비밀번호",
+    "database": "nest-mall",
+    "entities": ["dist/**/*.entity{.ts,.js}"],
+    "logging": true,
+    "synchronize": true
+}
+```  
+형식으로 연결할 DB 의 정보를 기입한다  
+
+## DB Schema 정리 
+```
+User
+userEmail = 이메일
+userName = 이름
+userPassword = 비밀번호
+userPhone = 전화번호
 ```
 
-## Support
+```
+productImage = 상품이미지
+productFreeDelivery = 무료배송여부
+productTitle = 상품제목
+discountPer = 할인율
+productPrice = 상품원래가격
+productDiscountPrice = 할인된가격
+productScore = 상품평점
+isDeleted = 삭제여부(softdelete)
+createdAt = 등록일자
+updatedAt = 수정일자
+```
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## 사용 모듈
+- bcrypt
+- dotenv
+- jsonwebtoken
+- swagger-jsdoc
+- swagger-ui-express  
 
-## Stay in touch
+## 정보
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+My Portfolio – [@노션](https://www.notion.so/Hello-I-m-Louis-6ec5e3f6bde04aa89dd19509654ef465)  
+My Email – wjdros1501@gmail.com  
+My Blog– [@블로그](https://ganzicoder.tistory.com/)  
+My Github–[https://github.com/JUNGganzi/](https://github.com/JUNGganzi)
