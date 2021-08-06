@@ -1,18 +1,25 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
+  Param,
   Post,
   Query,
   Request,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiOperation,
+  ApiParam,
+  ApiTags,
+} from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/jwt/jwt.auth.guard';
 import { AuthRequest } from 'src/utils/models/AuthRequest';
 import { BoardsService } from './boards.service';
 import { CreateBoardDto } from './dto/create.board.dto';
-import { Board } from './entities/board.entity';
 
 @Controller('boards')
 @ApiTags('Board')
@@ -41,5 +48,33 @@ export class BoardsController {
   })
   async list(@Query('take') take: number, @Query('page') page: number) {
     return await this.boardsService.list({ take, page });
+  }
+
+  /**
+   *
+   */
+  @Get('/:id')
+  @ApiOperation({
+    summary: '특정 게시물 조회 API',
+    description: '특정 게시글을 가져온다',
+  })
+  @ApiParam({ name: 'id', type: 'string' })
+  async listDetail(@Param('id') id: string) {
+    return await this.boardsService.listDetail(id);
+  }
+
+  /**
+   *
+   */
+  @Delete('/:id')
+  @ApiOperation({
+    summary: '특정 게시물 삭제 API',
+    description: '특정 게시글을 삭제한다',
+  })
+  @ApiParam({ name: 'id', type: 'string' })
+  @ApiBearerAuth('accessToken')
+  @UseGuards(JwtAuthGuard)
+  async delete(@Param('id') id: string, @Request() req: AuthRequest) {
+    return await this.boardsService.delete(id, req.user);
   }
 }

@@ -1,9 +1,11 @@
-import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Pagination, PaginationOptions } from 'src/utils/paginate';
+import { HttpException, Injectable } from '@nestjs/common';
+
 import { Repository } from 'typeorm';
-import { CreateBoardDto } from './dto/create.board.dto';
+
 import { Board } from './entities/board.entity';
+import { CreateBoardDto } from './dto/create.board.dto';
+import { Pagination, PaginationOptions } from 'src/utils/paginate';
 
 @Injectable()
 export class BoardsService {
@@ -15,7 +17,7 @@ export class BoardsService {
   /**
    * 게시글 작성
    */
-  async post(data: CreateBoardDto, uuid: string) {
+  async post(data: CreateBoardDto, id: string) {
     const { title, content } = data;
 
     if (!data) {
@@ -30,10 +32,12 @@ export class BoardsService {
       .create({
         title,
         content,
-        userId: uuid,
-        user: { uuid },
+        userId: id,
+        user: { id },
       })
       .save();
+
+    return await this.listDetail(result.id);
   }
 
   // 쿼리빌더 안썻을때 전체조회
@@ -43,7 +47,7 @@ export class BoardsService {
   //     const { take, page } = options;
   //     const [results, total] = await this.boardRepository.findAndCount({
   //       relations: ['user'],
-  //       select: ['uuid', 'userId', 'title', 'content', 'like', 'createdAt'],
+  //       select: ['id', 'userId', 'title', 'content', 'like', 'createdAt'],
   //       where: { deletedAt: null },
   //       take,
   //       skip: take * (page - 1),
@@ -62,20 +66,65 @@ export class BoardsService {
     const { take, page } = options;
     return await this.boardRepository
       .createQueryBuilder('board')
-      .innerJoin('board.user', 'user')
       .select([
-        'board.uuid',
+        'board.id',
+        'board.like',
+        'board.title',
         'board.userId',
         'user.nickname',
-        'board.title',
         'board.content',
-        'board.like',
         'board.createdAt',
       ])
+      .take(take)
+      .skip(take * (page - 1))
+      .innerJoin('board.user', 'user')
       .where('board.deletedAt IS NULL')
       .orderBy('board.createdAt', 'DESC')
-      .skip(take * (page - 1))
-      .take(take)
       .getManyAndCount();
+  }
+
+  /**
+   * 특정 게시글 조회
+   */
+  async listDetail(id: string) {
+    const result = await this.boardRepository.findOne({
+      relations: ['user'],
+      where: { id, deletedAt: null },
+    });
+
+    if (!result) {
+      throw new HttpException('존재하지않는 게시글 입니다', 404);
+    }
+
+    return {
+      id,
+      like: result.like,
+      title: result.title,
+      userId: result.userId,
+      content: result.content,
+      createdAt: result.createdAt,
+      user: { nickname: result.user.nickname },
+    };
+  }
+
+  /**
+   * 특정 게시글 삭제
+   */
+  async delete(id: string, user: string) {
+    const checkBoard = await this.listDetail(id);
+
+    if (checkBoard.userId !== user) {
+      throw new HttpException('해당 게시글의 작성자가 아닙니다', 401);
+    }
+
+    if (!checkBoard) {
+      throw new HttpException('존재하지않는 게시글 입니다', 404);
+    }
+
+    await this.boardRepository.softDelete({ id });
+
+    return {
+      data: 'OK',
+    };
   }
 }

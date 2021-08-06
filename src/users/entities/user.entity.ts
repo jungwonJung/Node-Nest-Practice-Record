@@ -13,7 +13,7 @@ import {
 @Entity({ name: 'user' })
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
-  uuid: string;
+  id: string;
 
   @Column({ unique: true, type: 'varchar', length: 64 })
   email: string;

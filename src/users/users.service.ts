@@ -30,17 +30,17 @@ export class UsersService {
   /**
    * 토큰으로 사용자 확인(authService 에서 검증)
    */
-  async find(uuid: string) {
+  async find(id: string) {
     const result = await this.userRepository.findOne({
       relations: ['board'],
-      where: { uuid },
-      select: ['uuid', 'email', 'nickname'],
+      where: { id },
+      select: ['id', 'email', 'nickname'],
     });
     if (!result) {
       throw new HttpException('권한이 없습니다', 401);
     }
     return {
-      userId: result.uuid,
+      userId: result.id,
     };
   }
 
@@ -94,12 +94,12 @@ export class UsersService {
       throw new HttpException('비밀번호가 일치하지 않습니다', 403);
     }
 
-    const payload = { id: checkEmail.uuid };
+    const payload = { id: checkEmail.id };
 
     return {
       token: this.jwtService.sign(payload),
       user: {
-        uuid: checkEmail.uuid,
+        id: checkEmail.id,
         email: checkEmail.email,
         nickname: checkEmail.nickname,
       },
