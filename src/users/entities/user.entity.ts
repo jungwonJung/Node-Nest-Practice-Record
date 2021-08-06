@@ -1,5 +1,6 @@
 import { Board } from 'src/boards/entities/board.entity';
 import {
+  BaseEntity,
   Column,
   CreateDateColumn,
   DeleteDateColumn,
@@ -10,17 +11,17 @@ import {
 } from 'typeorm';
 
 @Entity({ name: 'user' })
-export class User {
+export class User extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   uuid: string;
 
-  @Column({ unique: true })
+  @Column({ unique: true, type: 'varchar', length: 64 })
   email: string;
 
-  @Column()
+  @Column({ type: 'varchar', length: 20 })
   nickname: string;
 
-  @Column()
+  @Column({ type: 'varchar', length: 64 })
   password: string;
 
   @OneToMany(() => Board, (board) => board.user, {

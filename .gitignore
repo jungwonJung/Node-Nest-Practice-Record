@@ -32,3 +32,7 @@ lerna-debug.log*
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+# .env
+# ormconfig.ts 
+# 원래는 GitHub 에서 보이지않게 해야하나 과제이니 노출
