@@ -1,12 +1,18 @@
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { DocumentBuilder } from '@nestjs/swagger';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 
-function useSwaggerDocument(app: INestApplication) {
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule, {
+    cors: {
+      origin: ['http://localhost:3000'],
+    },
+  });
+
   const swaggerConfig = new DocumentBuilder()
-    .setTitle('게시판 API')
-    .setDescription('정정원이 만드는중')
+    .setTitle('corretto mission API')
+    .setDescription('솔리다리테 과제 진행중')
     .setVersion('1.0')
     .addBearerAuth(
       {
@@ -17,19 +23,13 @@ function useSwaggerDocument(app: INestApplication) {
       'accessToken',
     )
     .build();
-}
 
-async function bootstrap() {
-  const app = await NestFactory.create(AppModule, {
-    cors: {
-      origin: ['http://localhost:3000'],
-    },
-  });
+  const document = SwaggerModule.createDocument(app, swaggerConfig);
+
+  SwaggerModule.setup('api', app, document);
 
   app.useGlobalPipes(new ValidationPipe());
 
-  useSwaggerDocument(app);
-
-  await app.listen(process.env.PORT);
+  await app.listen(3000);
 }
 bootstrap();
