@@ -39,6 +39,9 @@ export class UsersService {
     if (!result) {
       throw new HttpException('권한이 없습니다', 401);
     }
+    return {
+      userId: result.uuid,
+    };
   }
 
   /**
