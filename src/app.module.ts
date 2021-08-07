@@ -6,6 +6,7 @@ import { BoardsModule } from './boards/boards.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as ormconfig from 'ormcofing';
 import { AuthModule } from './auth/auth.module';
+import { LikeRecordModule } from './like/like.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { AuthModule } from './auth/auth.module';
     UsersModule,
     BoardsModule,
     AuthModule,
+    LikeRecordModule,
   ],
   controllers: [AppController],
   providers: [AppService],

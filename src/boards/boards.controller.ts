@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Header,
   Param,
   Post,
   Query,
@@ -66,6 +67,21 @@ export class BoardsController {
   /**
    *
    */
+  @Get('/:id/login')
+  @ApiOperation({
+    summary: '특정 게시물 조회 API',
+    description: '특정 게시글을 가져온다',
+  })
+  @ApiBearerAuth('accessToken')
+  @UseGuards(JwtAuthGuard)
+  @ApiParam({ name: 'id', type: 'string' })
+  async listDetailLogin(@Param('id') id: string, @Request() req: AuthRequest) {
+    return await this.boardsService.listDetailLogin(id, req.user);
+  }
+
+  /**
+   *
+   */
   @Delete('/:id')
   @ApiOperation({
     summary: '특정 게시물 삭제 API',
@@ -76,5 +92,20 @@ export class BoardsController {
   @UseGuards(JwtAuthGuard)
   async delete(@Param('id') id: string, @Request() req: AuthRequest) {
     return await this.boardsService.delete(id, req.user);
+  }
+
+  /**
+   *
+   */
+  @Post('/:id/like')
+  @ApiOperation({
+    summary: '특정 게시물 좋아요 API',
+    description: '특정 게시글에 좋아요를 누른다',
+  })
+  @ApiParam({ name: 'id', type: 'string' })
+  @ApiBearerAuth('accessToken')
+  @UseGuards(JwtAuthGuard)
+  async like(@Param('id') id: string, @Request() req: AuthRequest) {
+    return await this.boardsService.like(id, req.user);
   }
 }

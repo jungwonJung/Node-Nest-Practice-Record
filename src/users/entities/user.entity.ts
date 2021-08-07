@@ -1,4 +1,5 @@
 import { Board } from 'src/boards/entities/board.entity';
+import { LikeRecord } from 'src/like/entities/like.entity';
 import {
   BaseEntity,
   Column,
@@ -28,6 +29,11 @@ export class User extends BaseEntity {
     primary: false,
   })
   board: Board;
+
+  @OneToMany(() => LikeRecord, (likeRecord) => likeRecord.user, {
+    primary: false,
+  })
+  likeRecord: LikeRecord;
 
   @CreateDateColumn()
   createdAt: Date;

@@ -1,3 +1,4 @@
+import { LikeRecord } from 'src/like/entities/like.entity';
 import { User } from 'src/users/entities/user.entity';
 import {
   BaseEntity,
@@ -7,6 +8,7 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -36,6 +38,11 @@ export class Board extends BaseEntity {
   })
   @JoinColumn({ name: 'user' })
   user: User;
+
+  @OneToMany(() => LikeRecord, (likeRecord) => likeRecord.board, {
+    primary: false,
+  })
+  likeRecord: LikeRecord;
 
   @CreateDateColumn()
   createdAt: Date;

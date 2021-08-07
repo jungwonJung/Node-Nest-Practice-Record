@@ -6,12 +6,14 @@ import { Repository } from 'typeorm';
 import { Board } from './entities/board.entity';
 import { CreateBoardDto } from './dto/create.board.dto';
 import { Pagination, PaginationOptions } from 'src/utils/paginate';
+import { LikeRecordService } from 'src/like/like.service';
 
 @Injectable()
 export class BoardsService {
   constructor(
     @InjectRepository(Board)
     private boardRepository: Repository<Board>,
+    private likeRecordService: LikeRecordService,
   ) {}
 
   /**
@@ -84,7 +86,7 @@ export class BoardsService {
   }
 
   /**
-   * 특정 게시글 조회
+   * 특정 게시글 조회 (로그인 안할시)
    */
   async listDetail(id: string) {
     const result = await this.boardRepository.findOne({
@@ -103,6 +105,47 @@ export class BoardsService {
       userId: result.userId,
       content: result.content,
       createdAt: result.createdAt,
+      isLike: false,
+      user: { nickname: result.user.nickname },
+    };
+  }
+
+  /**
+   * 특정 게시글 조회 (로그인 )
+   */
+  async listDetailLogin(id: string, user: string) {
+    const result = await this.boardRepository.findOne({
+      relations: ['user'],
+      where: { id, deletedAt: null },
+    });
+
+    const checkLike = await this.likeRecordService.getLikeRecord(id, user);
+
+    if (checkLike) {
+      return {
+        id,
+        like: result.like,
+        title: result.title,
+        userId: result.userId,
+        content: result.content,
+        createdAt: result.createdAt,
+        isLiked: true,
+        user: { nickname: result.user.nickname },
+      };
+    }
+
+    if (!result) {
+      throw new HttpException('존재하지않는 게시글 입니다', 404);
+    }
+
+    return {
+      id,
+      like: result.like,
+      title: result.title,
+      userId: result.userId,
+      content: result.content,
+      createdAt: result.createdAt,
+      isLiked: false,
       user: { nickname: result.user.nickname },
     };
   }
@@ -126,5 +169,30 @@ export class BoardsService {
     return {
       data: 'OK',
     };
+  }
+
+  /**
+   * 게시글 좋아요 수 증가
+   */
+  async likeIncrement(id: string, user: string) {
+    const checkLike = await this.likeRecordService.getLikeRecord(id, user);
+
+    if (!checkLike) {
+      return await this.boardRepository.increment({ id }, 'like', 1);
+    }
+
+    throw new HttpException('이미 좋아요를 한 게시글입니다', 401);
+  }
+
+  /**
+   * 게시글 좋아요
+   */
+  async like(id: string, user: string) {
+    const addLike = await this.likeIncrement(id, user);
+
+    if (addLike) {
+      await this.likeRecordService.createLikeRecord(id, user);
+      return await this.listDetailLogin(id, user);
+    }
   }
 }

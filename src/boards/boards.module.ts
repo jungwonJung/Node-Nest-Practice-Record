@@ -6,9 +6,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Board } from './entities/board.entity';
 import { BoardsService } from './boards.service';
 import { BoardsController } from './boards.controller';
+import { LikeRecordModule } from 'src/like/like.module';
 
 @Module({
   imports: [
+    LikeRecordModule,
     TypeOrmModule.forFeature([Board]),
     JwtModule.registerAsync({
       imports: [ConfigModule],
