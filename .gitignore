@@ -60,5 +60,6 @@ web_modules/
 
 # dotenv environment variables file
 .env
-
+.env.dev
 package-lock.json
+config.js
