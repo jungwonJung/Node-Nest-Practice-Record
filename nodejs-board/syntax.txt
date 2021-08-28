@@ -1,0 +1,13 @@
+req.params : 객체는 파라미터에 데이터를 가져온다.
+req.query : 쿼리스트링 파라미터에 전부를 가져온다.
+req.headers : header 값을 가져온다.
+req.cookies : 쿠키값을 확인한다. 
+req.ip : 프론트 아이피를 가져온다
+req.protoco : 프로토콜 http? https? 인지 가져온다
+req.url : 전체 URI 정보를 가져온다.
+
+
+res.send() : 클라이언트에 응답을 보낼 수 있다. 디버깅에서 많이 사용
+res.json() : 클라이언트에 자동으로 json을 만들어준다
+res.jsonp() : 클라이언트에 자동으로 jsonp을 만들어준다
+res.redirect() : 리다이렉트, 페이지를 이동 시킨다.
