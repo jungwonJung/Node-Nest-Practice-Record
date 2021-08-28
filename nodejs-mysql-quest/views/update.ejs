@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>수정</title>
+</head>
+<body>
+<h1>수정</h1>
+<form action="/update/<%= users[0].id %>" method="post">
+    id <input type="text" name="id" value="<%= users[0].id %>"<br>
+    des <input type="text" name="des" value="<%= users[0].des %>"<br>
+    <button type="submit">수정</button>
+</form>
+</body>
+</html>
